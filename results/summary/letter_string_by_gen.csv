@@ -1,0 +1,9 @@
+model,gen_level,n,acc,unparseable
+deepseek-chat,0,48,0.5208333333333334,0.0
+deepseek-chat,1,80,0.2875,0.0
+deepseek-chat,2,48,0.20833333333333334,0.0
+deepseek-chat,3,48,0.020833333333333332,0.0625
+deepseek-reasoner,0,48,0.8125,0.08333333333333333
+deepseek-reasoner,1,80,0.575,0.1125
+deepseek-reasoner,2,48,0.4375,0.08333333333333333
+deepseek-reasoner,3,48,0.20833333333333334,0.16666666666666666

@@ -1,0 +1,92 @@
+# 实验配置 - 一处改即可切换 smoke / full 模式
+# 每个任务有独立的样本量字段,smoke 模式下显著缩减以验证 pipeline
+
+mode: smoke   # smoke | full
+
+random_seed: 42
+
+# Phase 0 默认 dry_run 不打 API,只做脚手架自检
+dry_run: false
+
+# 输出与缓存
+paths:
+  data_dir: data
+  raw_results_dir: results/raw
+  summary_dir: results/summary
+  figures_dir: figures
+  cache_dir: cache
+  logs_dir: logs
+
+# 通用调用控制
+call:
+  request_timeout_s: 90
+  max_retries: 5
+  base_backoff_s: 2.0
+  rate_limit_qps: 2.0   # 客户端粗粒度限速
+
+# ---------- 各任务样本量 ----------
+tasks:
+
+  digit_matrix:
+    enabled: true
+    smoke:
+      n_per_subtype: 2
+    full:
+      n_per_subtype: 10    # [说明] 原论文 40/类,这里降到 10 控制 reasoner 时长(reasoner 单题~11s)
+    subtypes:
+      transformation: [constant, distribution_of_3, progression]
+      logic: [or, and, xor]
+
+  letter_string:
+    enabled: true
+    smoke:
+      n_per_cell: 1
+    full:
+      n_per_cell: 8       # [说明] 原论文 50/cell;为控时长降到 8
+    transformations: [extend, succ, pred, remove_redundant, fix_alphabetic, sort]
+    generalizations: [none, letter_to_letter_idx, group_size, group_size_and_idx, real_world]
+
+  # --- verbal_* 是 4 个独立任务对应 4 个数据集,共用同一 task 模块 ---
+  verbal_ucla_vat:
+    enabled: true
+    smoke:
+      n_max: 8
+    full:
+      n_max: null              # null = 全部 80
+  verbal_sternberg:
+    enabled: true
+    smoke:
+      n_max: 12
+    full:
+      n_max: null              # 全部 197
+  verbal_kmiecik:
+    enabled: true
+    smoke:
+      n_max: 16
+    full:
+      n_max: 160               # 4 cells x 40 题: Near/Far x True/False
+  verbal_jurgens:
+    enabled: false             # 用户决定 #4 只做 4a+4b
+
+  story_analogy:
+    enabled: true
+    smoke:
+      n_sets: 3                # 3 个 source × 4 trial = 12 题
+    full:
+      n_sets: 18               # 18 个 source × 4 trial = 72 题
+
+  problem_solving:
+    enabled: false   # Phase 3+ 再开
+    smoke:
+      n_runs: 1
+    full:
+      n_runs: 6
+
+# ---------- 拓展分析开关 ----------
+extensions:
+  reasoning_vs_chat: true       # DeepSeek-reasoner vs deepseek-chat
+  scale_effect: false           # 待开源模型选定后启用
+  human_similarity_r: true      # 跨子类型 r 值
+  prompt_robustness: false      # Phase 4 再开
+  few_shot: false               # Phase 4 再开
+  cross_lingual: false          # Phase 4 再开

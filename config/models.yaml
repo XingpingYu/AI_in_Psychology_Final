@@ -1,0 +1,184 @@
+# 模型清单 - 每条记录定义一个被评测对象
+# 加新模型只需在此添加一条 entry,评测逻辑不应硬编码任何模型名
+#
+# 字段说明:
+#   id            : 内部唯一标识,用于文件命名和结果索引
+#   provider      : openai | deepseek | openrouter
+#   model         : 调给 API 的真实模型名
+#   protocol      : prompt | logprob   评测协议(见 README/报告中讨论)
+#   family        : 用于横向比较的家族标签 (gpt / deepseek / qwen / llama / ...)
+#   size_b        : 参数量(B),开源模型才有意义;闭源填 null
+#   reasoning     : true 表示是 reasoning-style 模型(显式 CoT / reasoning tokens)
+#   temperature   : 默认 0;reasoning 模型可能强制 1
+#   max_tokens    : 单次最大输出 token
+#   enabled       : false 时跳过该模型(便于按阶段开关)
+#   notes         : 备注
+
+models:
+  # ============================ OpenAI ============================
+  # GPT-3 代理(text-davinci-003 已下线,gpt-3.5-turbo-instruct 是目前唯一仍在线的 GPT-3.5 completion-style)
+  - id: gpt-3.5-turbo-instruct
+    provider: openai
+    model: gpt-3.5-turbo-instruct
+    protocol: prompt    # 该模型实际支持 logprob,后续可单独切;现阶段统一用 prompt 协议
+    family: gpt
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 256
+    completion_style: true   # 关键:这是 completion endpoint 而非 chat
+    enabled: true
+    notes: "GPT-3 代理(text-davinci-003 已下线)"
+
+  # GPT-4 系列 — chat 主力
+  - id: gpt-4o-mini
+    provider: openai
+    model: gpt-4o-mini
+    protocol: prompt
+    family: gpt-4o
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "chat baseline 便宜版"
+
+  - id: gpt-4o
+    provider: openai
+    model: gpt-4o
+    protocol: prompt
+    family: gpt-4o
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "chat 中坚"
+
+  # GPT-4.1 三档(规模效应分析 - 同家族)
+  - id: gpt-4.1-nano
+    provider: openai
+    model: gpt-4.1-nano
+    protocol: prompt
+    family: gpt-4.1
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "scale-small (家族内同档对比 nano)"
+
+  - id: gpt-4.1-mini
+    provider: openai
+    model: gpt-4.1-mini
+    protocol: prompt
+    family: gpt-4.1
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "scale-mid"
+
+  - id: gpt-4.1
+    provider: openai
+    model: gpt-4.1
+    protocol: prompt
+    family: gpt-4.1
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "scale-large"
+
+  # GPT-5 三档(同家族规模效应,另一家族)
+  - id: gpt-5-nano
+    provider: openai
+    model: gpt-5-nano
+    protocol: prompt
+    family: gpt-5
+    size_b: null
+    reasoning: false
+    temperature: 1.0     # gpt-5 系列只支持 temperature=1
+    max_tokens: 4096     # gpt-5 系列在简单题里也会产生 reasoning tokens,需给足
+    enabled: true
+    notes: "GPT-5 small (note: gpt-5 family only supports temperature=1)"
+
+  - id: gpt-5-mini
+    provider: openai
+    model: gpt-5-mini
+    protocol: prompt
+    family: gpt-5
+    size_b: null
+    reasoning: false
+    temperature: 1.0
+    max_tokens: 4096
+    enabled: true
+    notes: "GPT-5 mid"
+
+  - id: gpt-5
+    provider: openai
+    model: gpt-5
+    protocol: prompt
+    family: gpt-5
+    size_b: null
+    reasoning: false
+    temperature: 1.0
+    max_tokens: 4096
+    enabled: true
+    notes: "GPT-5 frontier"
+
+  # Reasoning 模型(OpenAI)
+  - id: o3-mini
+    provider: openai
+    model: o3-mini
+    protocol: prompt
+    family: o-reasoning
+    size_b: null
+    reasoning: true
+    temperature: 1.0     # o-series only supports default temperature 1
+    max_tokens: 16384    # reasoning_tokens 计入 completion,需给足
+    enabled: true
+    notes: "OpenAI reasoning - 比较"
+
+  - id: o4-mini
+    provider: openai
+    model: o4-mini
+    protocol: prompt
+    family: o-reasoning
+    size_b: null
+    reasoning: true
+    temperature: 1.0
+    max_tokens: 16384
+    enabled: true
+    notes: "OpenAI reasoning - 更新"
+
+  # ============================ DeepSeek ============================
+  - id: deepseek-chat
+    provider: deepseek
+    model: deepseek-chat
+    protocol: prompt
+    family: deepseek
+    size_b: null
+    reasoning: false
+    temperature: 0.0
+    max_tokens: 1024
+    enabled: true
+    notes: "DeepSeek 通用 chat (V3) - 已跑过"
+
+  - id: deepseek-reasoner
+    provider: deepseek
+    model: deepseek-reasoner
+    protocol: prompt
+    family: deepseek
+    size_b: null
+    reasoning: true
+    temperature: 1.0
+    max_tokens: 6144
+    enabled: true
+    notes: "DeepSeek R1 - 已跑过"
+
+  # ============================ Qwen (暂不可用) ============================
+  # 用户阿里云 DashScope 账户未开通模型;开通后改 enabled: true 即可。
+  # 代码层支持已就绪(provider: dashscope, base_url 在 src/clients/registry.py)。

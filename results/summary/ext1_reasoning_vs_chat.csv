@@ -1,0 +1,19 @@
+pair_label,chat_id,reasoner_id,task,chat_acc,reasoner_acc,delta
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,digit_matrix,0.6751592356687898,0.8885350318471338,0.213375796178344
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,letter_string,0.26339285714285715,0.5178571428571429,0.25446428571428575
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,story_analogy,0.25,0.3611111111111111,0.1111111111111111
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,verbal_kmiecik,0.75625,0.825,0.06874999999999998
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,verbal_sternberg,0.8781725888324873,0.9543147208121827,0.07614213197969544
+DeepSeek (same-family),deepseek-chat,deepseek-reasoner,verbal_ucla_vat,0.95,0.9875,0.03750000000000009
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,digit_matrix,0.5063694267515924,0.9490445859872612,0.4426751592356688
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,letter_string,0.21428571428571427,0.4955357142857143,0.28125
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,story_analogy,0.3333333333333333,0.4444444444444444,0.1111111111111111
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,verbal_kmiecik,0.71875,0.71875,0.0
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,verbal_sternberg,0.8426395939086294,0.9187817258883249,0.07614213197969544
+OpenAI mid (gpt-4o-mini vs o3-mini),gpt-4o-mini,o3-mini,verbal_ucla_vat,0.95,0.9875,0.03750000000000009
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,digit_matrix,0.7165605095541401,0.9394904458598726,0.22292993630573255
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,letter_string,0.22767857142857142,0.5848214285714286,0.3571428571428572
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,story_analogy,0.1111111111111111,0.3333333333333333,0.2222222222222222
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,verbal_kmiecik,0.7125,0.8375,0.125
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,verbal_sternberg,0.9137055837563451,0.9441624365482234,0.030456852791878264
+OpenAI new (gpt-4.1-mini vs o4-mini),gpt-4.1-mini,o4-mini,verbal_ucla_vat,0.95,0.9875,0.03750000000000009
