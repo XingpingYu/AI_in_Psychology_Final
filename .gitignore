@@ -23,9 +23,15 @@ results/raw/
 logs/
 *.log
 
+# Data — not committed; see README "数据下载" for how to fetch
+/data/*
+!/data/.gitkeep
+docs/
+
 # IDE
 .idea/
 .vscode/
+.claude/
 *.swp
 .DS_Store
 

@@ -36,13 +36,13 @@
 ├── docs/
 │   └── s41562-023-01659-w.pdf   # 原论文 PDF
 │
-├── data/
-│   ├── repo_original/       # vendored: taylorwwebb/emergent_analogies_LLM
+├── data/                    # ★ 不纳入 git;运行前需自行下载,见下方「数据下载」
+│   ├── repo_original/       # clone: taylorwwebb/emergent_analogies_LLM
 │   │   ├── digit_mat/       # 32 子类型 + 人类 + GPT-3 baseline
 │   │   ├── letter_string/   # 28 子类型 + behavioral_results/
 │   │   ├── UCLA_VAT/        # 80 verbal analogies + 个体被试数据
 │   │   └── story_analogies/ # 1044 行 human/GPT-3 csv + 72 行 GPT-4 csv
-│   ├── AnalogyInventory/    # vendored: UCLA cvl lab AnalogyInventory.zip
+│   ├── AnalogyInventory/    # 解压自 UCLA cvl lab AnalogyInventory.zip
 │   │   └── Public/
 │   │       ├── Cognitive Psychology.xlsx  # 含 Sternberg / Kmiecik / Rattermann sheet
 │   │       └── ...
@@ -135,6 +135,55 @@ pip install -r requirements.txt
 
 主要依赖(详细见 [requirements.txt](requirements.txt)):
 `openai>=1.40`,`python-dotenv`,`pyyaml`,`pandas`,`numpy`,`scipy`,`matplotlib`,`seaborn`,`statsmodels`,`tqdm`,`tenacity`,`pypdf`(只用于 docs/ 检索),`openpyxl`。
+
+---
+
+## 数据下载
+
+> **本仓库不附带 `data/` 下的数据文件**(均为第三方原始素材,体积较大且各有归属许可,详见文末「数据归属」)。
+> 克隆本仓库后,`data/` 只有一个占位 `.gitkeep`;请按下面两步把数据放到位,代码默认从 `data/` 读取(`config/experiment.yaml` 中 `paths.data_dir: data`)。
+
+**① Webb 原仓库数据**(Digit Matrices / Letter String / UCLA VAT / Story Analogies 题集 + 人类/GPT-3/GPT-4 基线)
+
+直接把原仓库克隆到 `data/repo_original`:
+
+```bash
+git clone https://github.com/taylorwwebb/emergent_analogies_LLM.git data/repo_original
+```
+
+**② UCLA AnalogyInventory**(Sternberg 1980 / Kmiecik 2021 / Gentner-Rattermann-Forbus 1993 stimuli)
+
+下载 zip 后解压到 `data/AnalogyInventory`(解压后会自动得到 `data/AnalogyInventory/Public/*.xlsx`):
+
+```bash
+# Linux / macOS
+curl -L -o data/AnalogyInventory.zip http://cvl.psych.ucla.edu/resources/AnalogyInventory.zip
+unzip data/AnalogyInventory.zip -d data/AnalogyInventory
+```
+
+```powershell
+# Windows PowerShell
+Invoke-WebRequest -Uri "http://cvl.psych.ucla.edu/resources/AnalogyInventory.zip" -OutFile "data/AnalogyInventory.zip"
+Expand-Archive -Path "data/AnalogyInventory.zip" -DestinationPath "data/AnalogyInventory" -Force
+```
+
+放好后 `data/` 应当是这个结构:
+
+```
+data/
+├── repo_original/                    # ① clone 得到
+│   ├── digit_mat/all_problems.npz
+│   ├── letter_string/all_prob.npz
+│   ├── UCLA_VAT/UCLA_VAT.xlsx
+│   └── story_analogies/
+├── AnalogyInventory/                 # ② 解压得到
+│   └── Public/
+│       ├── Cognitive Psychology.xlsx
+│       └── ...
+└── AnalogyInventory.zip              # ② 下载得到(可删)
+```
+
+**验证数据就位**:跑离线自检(见下方「离线自检」),三个测试会从上述路径 load/parse,任何缺文件都会立刻报错。
 
 ---
 
