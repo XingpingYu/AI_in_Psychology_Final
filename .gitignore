@@ -26,12 +26,12 @@ logs/
 # Data — not committed; see README "数据下载" for how to fetch
 /data/*
 !/data/.gitkeep
-docs/
+/docs/*
 
 # IDE
 .idea/
 .vscode/
-.claude/
+.claude/*
 *.swp
 .DS_Store
 
